@@ -183,30 +183,4 @@ class Portfolio:
 
         # Display the plot using Streamlit
         st.pyplot(fig)
-    """ 
-    def run_all(self):
-        ''' 
-        historical_var_result = np.abs(self.historical_var())
-        historical_cvar_result = np.abs(self.historical_cvar())
-
-        parametric_var_result = np.abs(self.parametric_var())
-        parametric_cvar_result = np.abs(self.parametric_cvar())
-
-        monte_carlo_var_result = np.abs(self.monte_carlo_var())
-        monte_carlo_cvar_result = np.abs(self.monte_carlo_cvar())
-        '''
-        st.markdown("#### Parameters:")
-
-        # Example parameters
-        parameters = {
-            "Distribution": [self.distribution],
-            "Number of Day(s)": [self.n_days],  # Replace with your actual n_days values
-            "Confidence Level": [f"{self.confidence_level * 100:.0f}%"]  # Replace with your actual confidence level values
-        }
-        parameters_df = pd.DataFrame(parameters)
-        #st.dataframe(parameters_df, hide_index=True)
-        st.write(parameters_df)
-        st.markdown("") # For nextline between calculations and plot.
-        #self.plot_returns_distribution()
-    """
 
