@@ -1,5 +1,5 @@
 plotly
-yfinance==0.2.48
+yfinance==0.2.54
 scipy
 matplotlib
 quantstats
