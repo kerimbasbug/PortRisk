@@ -102,8 +102,8 @@ col2.plotly_chart(perf_fig, config={"displayModeBar": False})
 col3.plotly_chart(pie_fig, use_container_width=True, config={"displayModeBar": False})
 
 # -------
-
-rf_rate = yf.download('^TNX', end=datetime.today(), progress=False)['Adj Close'].iloc[-1].values[0]/100
+rf_rate = yf.download('^TNX', end=datetime.today(), progress=False)['Close'].iloc[-1].values[0]/100
+#rf_rate = yf.download('^TNX', end=datetime.today(), progress=False)['Adj Close'].iloc[-1].values[0]/100
 sharpe = qs.stats.sharpe(port.portfolio_returns, rf=rf_rate, periods=252)
 sortino = qs.stats.sortino(port.portfolio_returns, rf=rf_rate, periods=252)
 mdd = qs.stats.max_drawdown(port.portfolio_returns)
