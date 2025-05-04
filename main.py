@@ -3,7 +3,8 @@ import pandas as pd
 import numpy as np
 from datetime import datetime, timedelta
 import base64
-
+import time
+import yfinance as yf
 
 if 'page' not in st.session_state:
     st.session_state.page = "main"
@@ -50,8 +51,7 @@ df = st.data_editor(
     disabled=False
 )
 
-
-st.session_state.input_df = df #Assing df
+st.session_state.input_df = df
 
 col1, col2 = st.columns(2)
 st.session_state.start_date = col1.date_input("Start Date", value=datetime.today().date()-timedelta(days=365))
@@ -59,10 +59,33 @@ st.session_state.end_date = col2.date_input("End Date", value=datetime.today().d
 st.session_state.confidence_level = st.slider("VaR Confidence Level", 0.90, 0.99, 0.95)
 st.session_state.distribution = st.selectbox("Select Distribution for Parametric VaR", ["Normal", "Student-t"])
 
+if 'data_attempted' not in st.session_state:
+    st.session_state['data_attempted'] = False
+
+if 'use_csv' not in st.session_state:
+    st.session_state['use_csv'] = False
+
 if st.button('Continue', type='primary'):
-    st.switch_page('pages/PortAnalysis.py')
+    st.session_state['data_attempted'] = True
 
+if st.session_state['data_attempted']:
+    with st.spinner('Downloading...'):
+        time.sleep(3)
+        data = yf.download(
+            'AAPL',
+            start=datetime.today().date() - timedelta(days=365),
+            end=datetime.today().date()
+        )
+    if data.empty:
+        st.error('No data returned. The app may have hit the Yahoo Finance rate limit. Do you want to use the backup dataset?')
+        if st.button("Use Backup Dataset", type="primary"):
+            st.session_state['use_csv'] = True
+    else:
+        st.switch_page('pages/PortAnalysis.py')
 
+if st.session_state['use_csv']:
+    st.empty()
+    st.switch_page("pages/Backup.py")
 
 def encode_image_to_base64(image_path):
     with open(image_path, "rb") as image_file:
